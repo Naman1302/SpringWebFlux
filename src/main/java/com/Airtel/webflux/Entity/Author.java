@@ -24,6 +24,10 @@ public class Author {
         this.bookList=new ArrayList<>();
     }
 
+    public Author() {
+
+    }
+
     public ObjectId getId() {
         return id;
     }

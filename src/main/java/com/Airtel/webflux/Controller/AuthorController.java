@@ -1,4 +1,9 @@
-package com.Airtel.webflux.Publisher;
+package com.Airtel.webflux.Controller;
 
-public class AuthorPublisher {
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/books")
+public class AuthorController {
 }
