@@ -2,6 +2,8 @@ package com.Airtel.webflux.Entity;
 
 import com.Airtel.webflux.Entity.Supportclass.Address;
 import com.Airtel.webflux.Entity.Supportclass.BookInfo;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,10 +15,11 @@ import java.util.List;
 public class Author {
     @Id
     private ObjectId id;
+    @NotBlank(message = "Name is Mandatory")
     private String name;
+    @NotNull(message = "Address should be present")
     private Address address;
     private List<BookInfo> bookList;
-
     public Author(ObjectId id, String name, Address address) {
         this.id = id;
         this.name = name;

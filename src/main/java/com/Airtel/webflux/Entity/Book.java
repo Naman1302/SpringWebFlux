@@ -1,5 +1,6 @@
 package com.Airtel.webflux.Entity;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.bson.types.ObjectId;
@@ -15,8 +16,9 @@ public class Book {
     private String bookName;
     @NotBlank(message = "Genre is mandatory")
     private String genre;
-    @NotNull(message = "Copies available is mandatory")
+    @Min(value=1)
     private int copiesAvailable;
+    private ObjectId authorId;
 
     public Book() {
     }
@@ -26,7 +28,9 @@ public class Book {
         this.bookName = bookName;
         this.genre = genre;
         this.copiesAvailable = copiesAvaliable;
+        this.authorId=authorId;
     }
+
 
     public ObjectId getId() {
         return id;
@@ -58,5 +62,13 @@ public class Book {
 
     public void setCopiesAvailable(int copiesAvailable) {
         this.copiesAvailable = copiesAvailable;
+    }
+
+    public ObjectId getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(ObjectId authorId) {
+        this.authorId = authorId;
     }
 }

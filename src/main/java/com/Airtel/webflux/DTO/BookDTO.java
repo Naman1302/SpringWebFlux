@@ -1,15 +1,20 @@
 package com.Airtel.webflux.DTO;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 public class BookDTO {
     @Id
     private ObjectId id;
+    @NotBlank(message = "Name is mandatory")
     private String bookName;
+    @NotBlank(message = "Genre is mandatory")
     private String genre;
+    @Min(value=1)
     private int copiesAvailable;
-
+    private ObjectId authorId;
     public ObjectId getId() {
         return id;
     }
@@ -40,5 +45,13 @@ public class BookDTO {
 
     public void setCopiesAvailable(int copiesAvailable) {
         this.copiesAvailable = copiesAvailable;
+    }
+
+    public ObjectId getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(ObjectId authorId) {
+        this.authorId = authorId;
     }
 }

@@ -1,11 +1,15 @@
 package com.Airtel.webflux.Controller;
 
 import com.Airtel.webflux.DTO.BookDTO;
+import com.Airtel.webflux.DTO.BookInsertDTO;
 import com.Airtel.webflux.Service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -25,7 +29,7 @@ public class BookController {
     @GetMapping("/getByGenreAndCopiesCount")
     public Flux<BookDTO> getBooksByGenreAndCopies(@RequestParam String genre,@RequestParam int id){ return bookService.getBooksByGenreAndCopies(genre,id);}
     @PostMapping
-    public Mono<BookDTO> addBook(@RequestBody Mono<BookDTO> bookDTO){
-        return bookService.addBook(bookDTO);
+    public ResponseEntity<Mono<BookDTO>> addBook(@RequestBody @Valid BookInsertDTO request){
+        return ResponseEntity.ok(bookService.addBook(request));
     }
 }

@@ -2,6 +2,7 @@ package com.Airtel.webflux.Repository;
 
 import com.Airtel.webflux.DTO.BookDTO;
 import com.Airtel.webflux.Entity.Book;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,7 @@ public interface BookRepo extends ReactiveMongoRepository <Book,String>{
     //custom queries
     @Query("{'genre' : ?0, 'copiesAvailable' : {$gte : ?1} }")
     Flux<BookDTO> searchByGenreAndCopiesCount(String genre, int copiesAvailable);
+
+    @Query("{_id : ?0}")
+    Mono<BookDTO> getById(ObjectId bookId);
 }

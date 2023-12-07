@@ -3,10 +3,13 @@ package com.Airtel.webflux.Service;
 
 import com.Airtel.webflux.DTO.AuthorDTO;
 import com.Airtel.webflux.DTO.BookDTO;
+import com.Airtel.webflux.DTO.BookInsertDTO;
 import com.Airtel.webflux.DTO.supportDTO.BookInfoDTO;
+import com.Airtel.webflux.Entity.Supportclass.BookInfo;
 import com.Airtel.webflux.Entity.Book;
 import com.Airtel.webflux.Repository.AuthorRepo;
 import com.Airtel.webflux.Repository.BookRepo;
+import com.Airtel.webflux.Utils.AuthorUtil;
 import com.Airtel.webflux.Utils.BookUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,34 +28,35 @@ public class BookService {
     public Flux<BookDTO> getBookByGenre(String genre){
         return bookRepo.findByGenre(genre);
     }
-//    public Mono<BookDTO> addBook(BookInsertDTO bookInsertDTO){
-//        String authorName=bookInsertDTO.getAuthorName();
-//        AuthorDTO foundAuthor=authorRepo.findByName(authorName);
-//        if(foundAuthor==null){
-//            AuthorDTO newAuthor=new AuthorDTO();
-//            newAuthor.setName(authorName);
-//            authorRepo.save(newAuthor);
-//            book.setAuthorId(newAuthor.getid());
-//        }
-//        else{
-//            book.setAuthorId(foundAuthor.getid());
-//        }
-//        Book savedBook=bookRepo.save(book);
-//        foundAuthor.getBookList().add(savedBook.getId());
-//        authorRepo.save(foundAuthor);
-//        return savedBook;
-//    }
 
-    public Mono<BookDTO> addBook(Mono<BookDTO> bookDTOMono){
-        return bookDTOMono.map(BookUtil::dtoToEntity)
+    public Mono<BookDTO> addBook(BookInsertDTO requestMono){
+        String authorName=requestMono.getAuthorName();
+        Mono<BookDTO> bookDTOMono=authorRepo.findByName(authorName)
+                .flatMap((author) -> {
+                    if(author!=null) {
+                        BookDTO saveBook = BookUtil.entityToDTO(requestMono.getBook());
+                        saveBook.setAuthorId(author.getId());
+                        return Mono.just(saveBook);
+                    }
+                    else{
+                        return Mono.error(new NullPointerException("Author Not found"));
+                    }
+                });
+        Mono<BookDTO> response=bookDTOMono.map(BookUtil::dtoToEntity)
                 .flatMap(bookRepo::insert)
                 .map(BookUtil::entityToDTO);
+//        AuthorDTO foundAuthor=authorRepo.findByName(authorName)
+//                .flatMap((author)->
+//                        List<BookInfo> test=author.getBookList();
+//                        return null;
+//                )
+        return response;
     }
 
     public Flux<BookDTO> getBooksByGenreAndCopies(String genre, int id) {
         return bookRepo.searchByGenreAndCopiesCount(genre,id);
     }
-
+//
 //    public Flux<BookDTO> getBooksByAuthorsName(String authorList) {
 //        String[] authors= authorList.split(":");
 //        return Flux.fromArray(authors)
@@ -60,6 +64,15 @@ public class BookService {
 //                        .flatMapMany(this::getBooks));
 //    }
 //    private Flux<BookDTO> getBooks(AuthorDTO authorDTO){
-//
+//        if(authorDTO!=null && authorDTO.getBookList()!=null){
+//            List<BookInfoDTO> bookInfoDTOList = authorDTO.getBookList();
+//            return Flux.fromIterable(bookInfoDTOList)
+//                    .flatMap(bookInfoDTO -> bookRepo.findById(bookInfoDTO.getId())
+//                            .map(this::convertToDTO)
+//                    );
+//        }
+//        else{
+//            return Flux.empty();
+//        }
 //    }
 }
