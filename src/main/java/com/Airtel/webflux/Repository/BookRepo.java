@@ -18,4 +18,6 @@ public interface BookRepo extends ReactiveMongoRepository <Book,String>{
 
     @Query("{_id : ?0}")
     Mono<BookDTO> getById(ObjectId bookId);
+    @Query("{authorId: ?0}")
+    Flux<BookDTO> findBookWhereAuthorIsIn(ObjectId authorId);
 }

@@ -4,6 +4,7 @@ import com.Airtel.webflux.DTO.AuthorDTO;
 import com.Airtel.webflux.Repository.AuthorRepo;
 import com.Airtel.webflux.Utils.AuthorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,7 +25,7 @@ public class AuthorService {
                 .flatMap(authorRepo::insert)
                 .map(AuthorUtil::entityToDTO);
     }
-
+    @Query("{name:{$regex:?0, $options :'i'}}")
     public Flux<AuthorDTO> getAllAuthorsByNamesLike(String authorPattern) {
         return authorRepo.searchAuthorsByNamesLike(authorPattern);
     }

@@ -19,12 +19,12 @@ public class Author {
     private String name;
     @NotNull(message = "Address should be present")
     private Address address;
-    private List<BookInfo> bookList;
+    //private List<BookInfo> bookList;
     public Author(ObjectId id, String name, Address address) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.bookList=new ArrayList<>();
+        //this.bookList=new ArrayList<>();
     }
 
     public Author() {
@@ -55,11 +55,11 @@ public class Author {
         this.address = address;
     }
 
-    public List<BookInfo> getBookList() {
-        return bookList;
-    }
-
-    public void setBookList(List<BookInfo> bookList) {
-        this.bookList = bookList;
-    }
+//    public List<BookInfo> getBookList() {
+//        return bookList;
+//    }
+//
+//    public void setBookList(List<BookInfo> bookList) {
+//        this.bookList = bookList;
+//    }
 }

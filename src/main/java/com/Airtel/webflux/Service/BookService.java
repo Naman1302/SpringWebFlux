@@ -50,22 +50,22 @@ public class BookService {
                 .flatMap(bookRepo::insert)
                 .map(BookUtil::entityToDTO);
         System.out.println("Book saved");
-        Mono<AuthorDTO> updatedAuthorMono = bookDTOMono
-                .map(BookUtil::dtoToEntity)
-                .flatMap(savedBook -> authorRepo.findByName(authorName)
-                        .flatMap(author -> {
-                            if (author != null) {
-                                BookInfo newBookInfo = new BookInfo();
-                                newBookInfo.setId(savedBook.getId());
-                                newBookInfo.setBookName(savedBook.getBookName());
-
-                                author.getBookList().add(newBookInfo);
-                                System.out.println("Added book to list" );
-                                return authorRepo.save(AuthorUtil.dtoToEntity(author)).map(AuthorUtil::entityToDTO);
-                            } else {
-                                return Mono.error(new NullPointerException("Author Not found"));
-                            }
-                        }));
+//        Mono<AuthorDTO> updatedAuthorMono = bookDTOMono
+//                .map(BookUtil::dtoToEntity)
+//                .flatMap(savedBook -> authorRepo.findByName(authorName)
+//                        .flatMap(author -> {
+//                            if (author != null) {
+//                                BookInfo newBookInfo = new BookInfo();
+//                                newBookInfo.setId(savedBook.getId());
+//                                newBookInfo.setBookName(savedBook.getBookName());
+//
+//                                author.getBookList().add(newBookInfo);
+//                                System.out.println("Added book to list" );
+//                                return authorRepo.save(AuthorUtil.dtoToEntity(author)).map(AuthorUtil::entityToDTO);
+//                            } else {
+//                                return Mono.error(new NullPointerException("Author Not found"));
+//                            }
+//                        }));
         return response;
     }
 
@@ -80,11 +80,8 @@ public class BookService {
                         .flatMapMany(this::getBooks));
     }
     private Flux<BookDTO> getBooks(AuthorDTO authorDTO){
-        if(authorDTO!=null && authorDTO.getBookList()!=null){
-            List<BookDTO> bookDTOList = authorDTO.getBookList().stream().map(BookInfo::getId)
-                                                    .map(book -> BookUtil.entityToDTO(BookUtil.dtoToEntity(bookRepo.getById(book).block())))
-                                                    .toList();
-            return Flux.fromIterable(bookDTOList);
+        if(authorDTO!=null && authorDTO.getId()!=null){
+            return bookRepo.findBookWhereAuthorIsIn(authorDTO.getId());
         }
         else{
             return Flux.empty();

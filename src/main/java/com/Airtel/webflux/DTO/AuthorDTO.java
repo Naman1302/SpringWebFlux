@@ -17,11 +17,11 @@ public class AuthorDTO {
     private String name;
     @NotNull(message = "Address should be present")
     private Address address;
-    private List<BookInfo> bookList;
+    //private List<BookInfo> bookList;
 
-    public AuthorDTO() {
-        this.bookList=new ArrayList<>();
-    }
+//    public AuthorDTO() {
+//        this.bookList=new ArrayList<>();
+//    }
 
     public ObjectId getId() {
         return id;
@@ -47,11 +47,11 @@ public class AuthorDTO {
         this.address = address;
     }
 
-    public List<BookInfo> getBookList() {
-        return bookList;
-    }
-
-    public void setBookList(List<BookInfo> bookList) {
-        this.bookList = bookList;
-    }
+//    public List<BookInfo> getBookList() {
+//        return bookList;
+//    }
+//
+//    public void setBookList(List<BookInfo> bookList) {
+//        this.bookList = bookList;
+//    }
 }
