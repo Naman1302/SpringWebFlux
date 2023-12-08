@@ -4,21 +4,13 @@ package com.Airtel.webflux.Service;
 import com.Airtel.webflux.DTO.AuthorDTO;
 import com.Airtel.webflux.DTO.BookDTO;
 import com.Airtel.webflux.DTO.BookInsertDTO;
-import com.Airtel.webflux.DTO.supportDTO.BookInfoDTO;
-import com.Airtel.webflux.Entity.Supportclass.BookInfo;
-import com.Airtel.webflux.Entity.Book;
 import com.Airtel.webflux.Repository.AuthorRepo;
 import com.Airtel.webflux.Repository.BookRepo;
-import com.Airtel.webflux.Utils.AuthorUtil;
-import com.Airtel.webflux.Utils.BookInfoUtil;
 import com.Airtel.webflux.Utils.BookUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -38,12 +30,12 @@ public class BookService {
         Mono<BookDTO> bookDTOMono=authorRepo.findByName(authorName)
                 .flatMap((author) -> {
                     if(author!=null) {
-                        BookDTO saveBook = BookUtil.entityToDTO(requestMono.getBook());
+                        BookDTO saveBook = requestMono.getBookDTO();
                         saveBook.setAuthorId(author.getId());
                         return Mono.just(saveBook);
                     }
                     else{
-                        return Mono.error(new NullPointerException("Author Not found"));
+                        return Mono.error(new IllegalArgumentException("Author Not found"));
                     }
                 });
         Mono<BookDTO> response=bookDTOMono.map(BookUtil::dtoToEntity)
@@ -69,8 +61,8 @@ public class BookService {
         return response;
     }
 
-    public Flux<BookDTO> getBooksByGenreAndCopies(String genre, int id) {
-        return bookRepo.searchByGenreAndCopiesCount(genre,id);
+    public Flux<BookDTO> getBooksByGenreAndCopies(String genre, int copies) {
+        return bookRepo.searchByGenreAndCopiesCount(genre,copies);
     }
 
     public Flux<BookDTO> getBooksByAuthorsName(String authorList) {

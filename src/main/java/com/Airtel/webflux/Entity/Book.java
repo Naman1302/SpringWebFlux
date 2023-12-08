@@ -23,11 +23,11 @@ public class Book {
     public Book() {
     }
 
-    public Book(ObjectId id, String bookName, String genre, int copiesAvaliable) {
+    public Book(ObjectId id, String bookName, String genre, int copiesAvailable,ObjectId authorId) {
         this.id = id;
         this.bookName = bookName;
         this.genre = genre;
-        this.copiesAvailable = copiesAvaliable;
+        this.copiesAvailable = copiesAvailable;
         this.authorId=authorId;
     }
 

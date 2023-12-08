@@ -15,6 +15,18 @@ public class BookDTO {
     @Min(value=1)
     private int copiesAvailable;
     private ObjectId authorId;
+
+    public BookDTO() {
+    }
+
+    public BookDTO(ObjectId id, String bookName, String genre, int copiesAvailable, ObjectId authorId) {
+        this.id = id;
+        this.bookName = bookName;
+        this.genre = genre;
+        this.copiesAvailable = copiesAvailable;
+        this.authorId = authorId;
+    }
+
     public ObjectId getId() {
         return id;
     }

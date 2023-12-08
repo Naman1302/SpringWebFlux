@@ -23,6 +23,15 @@ public class AuthorDTO {
 //        this.bookList=new ArrayList<>();
 //    }
 
+    public AuthorDTO() {
+    }
+
+    public AuthorDTO(ObjectId id, String name, Address address) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+    }
+
     public ObjectId getId() {
         return id;
     }

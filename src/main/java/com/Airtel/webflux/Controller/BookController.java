@@ -27,7 +27,7 @@ public class BookController {
         return bookService.getBookByGenre(genre);
     }
     @GetMapping("/getByGenreAndCopiesCount")
-    public Flux<BookDTO> getBooksByGenreAndCopies(@RequestParam String genre,@RequestParam int id){ return bookService.getBooksByGenreAndCopies(genre,id);}
+    public Flux<BookDTO> getBooksByGenreAndCopies(@RequestParam String genre,@RequestParam int copies){ return bookService.getBooksByGenreAndCopies(genre,copies);}
     @GetMapping("/byAuthorsNames")
     public Flux<BookDTO> getBooksByAuthorsNames(@RequestParam String authorList){ return bookService.getBooksByAuthorsName(authorList);}
     @PostMapping
