@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "book")
@@ -12,6 +13,7 @@ public class Book {
 
     @Id
     private ObjectId id;
+    @Indexed(unique = true)
     @NotBlank(message = "Name is mandatory")
     private String bookName;
     @NotBlank(message = "Genre is mandatory")
