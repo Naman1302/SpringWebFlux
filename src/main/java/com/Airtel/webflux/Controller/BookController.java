@@ -30,8 +30,10 @@ public class BookController {
     public Flux<BookDTO> getBooksByGenreAndCopies(@RequestParam String genre,@RequestParam int copies){ return bookService.getBooksByGenreAndCopies(genre,copies);}
     @GetMapping("/byAuthorsNames")
     public Flux<BookDTO> getBooksByAuthorsNames(@RequestParam String authorList){ return bookService.getBooksByAuthorsName(authorList);}
+    @GetMapping("/byBookIds")
+    public  Flux<BookDTO> getBooksByIds(@RequestParam String bookIdList){ return bookService.getBooksByIds(bookIdList);}
     @PostMapping
-    public ResponseEntity<Mono<BookDTO>> addBook(@RequestBody @Valid BookInsertDTO request){
+    public ResponseEntity<Mono<BookDTO>> addBook(@Valid @RequestBody  BookInsertDTO request){
         return ResponseEntity.ok(bookService.addBook(request));
     }
 }

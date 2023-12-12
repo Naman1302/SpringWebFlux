@@ -7,17 +7,29 @@ import com.Airtel.webflux.DTO.BookInsertDTO;
 import com.Airtel.webflux.Repository.AuthorRepo;
 import com.Airtel.webflux.Repository.BookRepo;
 import com.Airtel.webflux.Utils.BookUtil;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class BookService {
+    private WebClient webClient;
     @Autowired
     private BookRepo bookRepo;
     @Autowired
     private AuthorRepo authorRepo;
+
+    public BookService(){
+        this.webClient=WebClient.create();
+    }
     public Flux<BookDTO> getAllBooks(){
         return bookRepo.findAll().map(BookUtil::entityToDTO);
     }
@@ -30,7 +42,7 @@ public class BookService {
         Mono<BookDTO> bookDTOMono=authorRepo.findByName(authorName)
                 .flatMap((author) -> {
                     if(author!=null) {
-                        BookDTO saveBook = requestMono.getBookDTO();
+                        BookDTO saveBook = requestMono.getBook();
                         saveBook.setAuthorId(author.getId());
                         return Mono.just(saveBook);
                     }
@@ -78,5 +90,14 @@ public class BookService {
         else{
             return Flux.empty();
         }
+    }
+
+    public Flux<BookDTO> getBooksByIds(String bookIdList) {
+        String springBootUri="http://localhost:8080/books/getBookByIds";
+
+        return webClient.get()
+                .uri(springBootUri + "?bookIdList=" + bookIdList)
+                .retrieve()
+                .bodyToFlux(BookDTO.class);
     }
 }

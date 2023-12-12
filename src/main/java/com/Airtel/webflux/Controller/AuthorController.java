@@ -38,7 +38,7 @@ public class AuthorController {
 //                });
 //    }
     @PostMapping
-    public ResponseEntity<Mono<AuthorDTO>> addAuthor(@RequestBody @Valid AuthorDTO authorDTO){
+    public ResponseEntity<Mono<AuthorDTO>> addAuthor(@Valid @RequestBody  AuthorDTO authorDTO){
         return ResponseEntity.ok(authorService.addAuthor(Mono.just(authorDTO)));
     }
 }
