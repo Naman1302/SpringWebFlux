@@ -1,22 +1,20 @@
 package com.Airtel.webflux.DTO;
 
-import com.Airtel.webflux.Entity.Book;
-
 public class BookInsertDTO {
-    private BookDTO bookDTO;
+    private BookDTO book;
     private String authorName;
 
-    public BookInsertDTO(BookDTO bookDTO, String authorName) {
-        this.bookDTO = bookDTO;
+    public BookInsertDTO(BookDTO book, String authorName) {
+        this.book = book;
         this.authorName = authorName;
     }
 
-    public BookDTO getBookDTO() {
-        return bookDTO;
+    public BookDTO getBook() {
+        return book;
     }
 
-    public void setBookDTO(BookDTO bookDTO) {
-        this.bookDTO = bookDTO;
+    public void setBook(BookDTO book) {
+        this.book = book;
     }
 
     public String getAuthorName() {

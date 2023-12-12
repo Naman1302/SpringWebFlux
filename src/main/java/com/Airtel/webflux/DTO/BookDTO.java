@@ -4,10 +4,12 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 public class BookDTO {
     @Id
     private ObjectId id;
+    @Indexed(unique = true)
     @NotBlank(message = "Name is mandatory")
     private String bookName;
     @NotBlank(message = "Genre is mandatory")

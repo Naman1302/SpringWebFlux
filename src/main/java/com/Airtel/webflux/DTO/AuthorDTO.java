@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 public class AuthorDTO {
     @Id
     private ObjectId id;
+    @Indexed(unique = true)
     @NotBlank(message = "Name is Mandatory")
     private String name;
     @NotNull(message = "Address should be present")
